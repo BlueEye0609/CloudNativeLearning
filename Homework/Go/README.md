@@ -1,4 +1,4 @@
-## 模块三：Docker 核心计划
+## 模块三：Docker 核心技术
 ### 作业内容
 - 构建本地镜像
 - 编写 Dockerfile 将练习 2.2 编写的 httpserver 容器化
