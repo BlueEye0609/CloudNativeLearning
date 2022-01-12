@@ -7,7 +7,8 @@
 - 通过 nsenter 进入容器查看 IP 配置
 
 ### 作业查看
-[Dockerfile](Dockefile)
+[Dockerfile](Dockerfile)
+
 [Docker hub 镜像](https://hub.docker.com/repository/docker/yejing0609/gohttpserver)
 
 docker 命令本地启动 httpserver
