@@ -8,12 +8,16 @@
 
 ### 作业查看
 [Dockerfile](Dockefile)
-[Docker hub 镜像](链接)
+[Docker hub 镜像](https://hub.docker.com/repository/docker/yejing0609/gohttpserver)
 
 docker 命令本地启动 httpserver
 ```
+# docker build -t yejing0609/gohttpserver:v1 .
+# docker run -d yejing0609/gohttpserver:v1
 ```
 
 通过 nsenter 进入容器查看 IP 配置
 ```
+# PID=$(docker inspect --format "{{.State.Pid}}" <container>)
+# nsenter --target $PID --net ip a
 ```
