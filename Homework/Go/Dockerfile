@@ -1,8 +1,10 @@
-FROM golang:latest
+FROM golang:1.16-alpine AS build
 
-RUN mkdir /scripts
-COPY httpServer/* /scripts/
+WORKDIR /src/
 
-expose 80
+COPY httpServer/main.go httpServer/go.* /src/
+RUN CGO_ENABLED=0 go build -o /bin/httpserver
 
-ENTRYPOINT [ "go", "run", "/scripts/main.go" ]
+FROM scratch
+COPY --from=build /bin/httpserver /bin/httpserver
+ENTRYPOINT [ "/bin/httpserver" ]
