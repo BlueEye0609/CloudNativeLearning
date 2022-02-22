@@ -2,13 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	"os"
 	"strings"
 )
 
-func defaultHandler(w http.ResponseWriter, req *http.Request) {
+func index(w http.ResponseWriter, req *http.Request) {
 	// 1. 接收客户端 request，并将 request 中带的 header 写入 response header
 	for key, value := range req.Header {
 		w.Header().Set(key, value[0])
@@ -33,7 +35,15 @@ func healthzHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", defaultHandler)
-	http.HandleFunc("/healthz", healthzHandler)
-	http.ListenAndServe(":80", nil)
+	mux := http.NewServeMux()
+	// 06.debug
+	mux.HandleFunc("/debug/pprof/", pprof.Index)
+	mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	mux.HandleFunc("/", index)
+	mux.HandleFunc("/healthz", healthzHandler)
+	if err := http.ListenAndServe(":80", mux); err != nil {
+		log.Fatalf("start http server failed, error: %s\n", err.Error())
+	}
 }
