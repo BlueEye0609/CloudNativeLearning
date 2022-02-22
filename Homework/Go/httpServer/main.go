@@ -1,13 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
 	"net/http/pprof"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
+	"time"
 )
 
 func index(w http.ResponseWriter, req *http.Request) {
@@ -35,6 +39,10 @@ func healthzHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	// subscribe SIGINT/SIGTERM signals
+	stopChan := make(chan os.Signal)
+	signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
+
 	mux := http.NewServeMux()
 	// 06.debug
 	mux.HandleFunc("/debug/pprof/", pprof.Index)
@@ -43,7 +51,20 @@ func main() {
 	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/healthz", healthzHandler)
-	if err := http.ListenAndServe(":80", mux); err != nil {
-		log.Fatalf("start http server failed, error: %s\n", err.Error())
-	}
+
+	srv := &http.Server{Addr: ":80", Handler: mux}
+
+	go func() {
+		// server connections
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatalf("start http server failed, error: %s\n", err.Error())
+		}
+	}()
+
+	<-stopChan // wait for SIGINT or SIGTERM
+	log.Println("Shutting down server")
+
+	// shut down gracefully, but wait no longer 30 seconds before halting.
+	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	srv.Shutdown(ctx)
 }

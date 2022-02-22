@@ -8,6 +8,10 @@
 - 日常运维需求，日志等级
 - 配置和代码分离
 
+所做事情：
+- 修改了原 [main.go](../Go/httpServer/main.go) 代码，使其能够优雅终止。并将其制成 docker image push 到了 dockerhub。[yejing0609/gohttpserver:v4](https://hub.docker.com/r/yejing0609/gohttpserver/tags)
+- 将 [deployment.yaml](./Files/deployment.yaml) 部署在 K8S 集群上
+
 # 第二部分
 除了将 httpServer 应用优雅的运行在 Kubernetes 之上，我们还应该考虑如何将服务发布给对内和对外的调用方。
 
