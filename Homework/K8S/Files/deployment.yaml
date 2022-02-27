@@ -9,6 +9,11 @@ spec:
   selector:
     matchLabels:
       app: httpserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -34,7 +39,6 @@ spec:
           httpGet:
             path: /healthz
             port: 80
-            scheme: HTTP
           initialDelaySeconds: 5
           periodSeconds: 5
       terminationGracePeriodSeconds: 60
