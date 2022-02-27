@@ -15,7 +15,7 @@ spec:
         app: httpserver
     spec:
       containers:
-      - image: yejing0609/gohttpserver:v3
+      - image: yejing0609/gohttpserver:v4
         name: httpserver
         resources: 
           requests:
@@ -34,6 +34,7 @@ spec:
           httpGet:
             path: /healthz
             port: 80
+            scheme: HTTP
           initialDelaySeconds: 5
           periodSeconds: 5
       terminationGracePeriodSeconds: 60
