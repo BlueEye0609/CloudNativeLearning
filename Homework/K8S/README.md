@@ -24,3 +24,8 @@
 可以考虑的细节
 - 如何确保整个应用的高可用。
 - 如何通过证书保证 httpServer 的通讯安全。
+
+所做事情：
+- [ingress.yaml](ingress.yaml)
+- [secret.yaml](secret.yaml)
+- [service.yaml](service.yaml)
