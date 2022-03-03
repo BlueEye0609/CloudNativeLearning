@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gohttpserver-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+    - hosts:
+        - cncamp.com
+      secretName: cncamp-tls
+  rules:
+  - host: www.gohttpserver.com
+    http:
+      paths:
+        - backend:
+            service:
+              name: gohttpserver-service
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
