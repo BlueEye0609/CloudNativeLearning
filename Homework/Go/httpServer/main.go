@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"httpServerDemo/metrics"
 	"log"
+	"math/rand"
 	"net"
 	"net/http"
 	"net/http/pprof"
@@ -12,9 +14,18 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func index(w http.ResponseWriter, req *http.Request) {
+	timer := metrics.NewTimer()
+	defer timer.ObserveTotal()
+
+	// 0 ms to 2s delay
+	delay := rand.Intn(2000)
+	time.Sleep(time.Millisecond * time.Duration(delay))
+
 	// 1. 接收客户端 request，并将 request 中带的 header 写入 response header
 	for key, value := range req.Header {
 		w.Header().Set(key, value[0])
@@ -43,6 +54,8 @@ func main() {
 	stopChan := make(chan os.Signal)
 	signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
 
+	metrics.Register()
+
 	mux := http.NewServeMux()
 	// 06.debug
 	mux.HandleFunc("/debug/pprof/", pprof.Index)
@@ -51,6 +64,7 @@ func main() {
 	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/healthz", healthzHandler)
+	mux.Handle("/metrics", promhttp.Handler())
 
 	srv := &http.Server{Addr: ":80", Handler: mux}
 
