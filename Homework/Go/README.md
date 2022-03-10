@@ -35,7 +35,7 @@ docker 命令本地启动 httpserver
 1. 从 Promethus 界面中查询延时指标数据；
 
 ### 修改
-- 在 Go 的代码里添加 prometheus metrics 相关代码。[main.go](httpserver/main.go), [metrics.go](httpserver/metrics/metrics.go)
+- 在 Go 的代码里添加 prometheus metrics 相关代码。[main.go](httpServer/main.go), [metrics.go](httpServer/metrics/metrics.go)
 - 创建新的 docker image: [yejing0609/gohttpserver:v5](https://hub.docker.com/repository/docker/yejing0609/gohttpserver)
 - 修改 [deployment.yaml](../K8S/Files/deployment.yaml) 的 annotaiton、image、port 使其能够被 prometheus 使用
 - 部署到测试集群
