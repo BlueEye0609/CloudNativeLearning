@@ -4,6 +4,7 @@ metadata:
   labels:
     app: httpserver
   name: httpserver
+  namespace: httpserver
 spec:
   replicas: 2
   selector:
@@ -23,7 +24,7 @@ spec:
         app: httpserver
     spec:
       containers:
-      - image: yejing0609/gohttpserver:v4
+      - image: yejing0609/gohttpserver:v5
         name: httpserver
         ports:
         - containerPort: 80

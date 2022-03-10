@@ -2,7 +2,7 @@ FROM golang:1.16-alpine AS build
 
 WORKDIR /src/
 
-COPY httpServer/main.go httpServer/go.* /src/
+COPY httpServer/ /src/
 RUN CGO_ENABLED=0 go build -o /bin/httpserver
 
 FROM scratch
