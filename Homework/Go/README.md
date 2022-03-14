@@ -199,7 +199,14 @@ promhttp_metric_handler_requests_total{code="503"} 0
 
 ```
 
+Prometheus target
+![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/prometheus-target.PNG)
 
+Prometheus graph
+![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/prometheus-graph.PNG)
+
+Grafana graph
+![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/grafana-httpserver.PNG)
 参考
 
 https://cloud.tencent.com/document/product/1416/56033
