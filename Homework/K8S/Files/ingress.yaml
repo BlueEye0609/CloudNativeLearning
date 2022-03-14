@@ -2,15 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gohttpserver-ingress
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
+  namespace: httpserver
 spec:
-  tls:
-    - hosts:
-        - cncamp.com
-      secretName: cncamp-tls
+  ingressClassName: "nginx"
   rules:
-  - host: www.gohttpserver.com
+  - host: gohttpserver.cloudnative.test
     http:
       paths:
         - backend:
