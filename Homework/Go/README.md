@@ -37,10 +37,13 @@ docker 命令本地启动 httpserver
 ### 修改
 - 在 Go 的代码里添加 prometheus metrics 相关代码。[main.go](httpServer/main.go), [metrics.go](httpServer/metrics/metrics.go)
 - 创建新的 docker image: [yejing0609/gohttpserver:v5](https://hub.docker.com/repository/docker/yejing0609/gohttpserver)
-- 修改 [deployment.yaml](../K8S/Files/deployment.yaml) 的 annotaiton、image、port 使其能够被 prometheus 使用
+- 修改 [service.yaml](../K8S/Files/service.yaml) 的 annotaiton、image、port 使其能够被 prometheus 使用
 - 部署到测试集群
+- 安装 promethues，配置 prometheus。create [promethues-additional.yaml](../K8S/Files/prometheus/prometheus-additional.yaml) as secrets, [rbac.yaml](../K8S/Files/rbac.yaml)
+- 安装 grafana
+- 从 Promethues 和 grafana 界面中获取结果
 
-### 测试
+### 测试结果
 ```
 root@master-node:~# kubectl get pods -n httpserver -o wide
 NAME                         READY   STATUS    RESTARTS   AGE   IP                NODE          NOMINATED NODE   READINESS GATES
@@ -195,6 +198,8 @@ promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
 
 ```
+
+
 参考
 
 https://cloud.tencent.com/document/product/1416/56033

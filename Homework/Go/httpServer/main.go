@@ -66,7 +66,7 @@ func main() {
 	mux.HandleFunc("/healthz", healthzHandler)
 	mux.Handle("/metrics", promhttp.Handler())
 
-	srv := &http.Server{Addr: ":80", Handler: mux}
+	srv := &http.Server{Addr: ":8080", Handler: mux}
 
 	go func() {
 		// server connections

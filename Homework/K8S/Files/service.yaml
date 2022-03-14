@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
   name: gohttpserver-service
   namespace: httpserver
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
     protocol: TCP
-    name: http
   selector:
     app: httpserver

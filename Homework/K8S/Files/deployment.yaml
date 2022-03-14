@@ -17,17 +17,12 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      annotations:
-        prometheus.io/scape: "true"
-        prometheus.io/port: "80"
       labels:
         app: httpserver
     spec:
       containers:
-      - image: yejing0609/gohttpserver:v5
+      - image: yejing0609/gohttpserver:v6
         name: httpserver
-        ports:
-        - containerPort: 80
         resources: 
           requests:
             memory: "64Mi"
@@ -38,13 +33,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 80
+            port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 80
+            port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
       terminationGracePeriodSeconds: 60
