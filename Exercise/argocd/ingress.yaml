@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gohttpserver-ingress
-  namespace: httpserver
+  name: argocd-ingress
+  namespace: argocd
 spec:
   ingressClassName: "nginx"
   rules:
-  - host: gohttpserver.cloudnative-learn.com
+  - host: argocd.cloudnative-learn.com
     http:
       paths:
         - backend:

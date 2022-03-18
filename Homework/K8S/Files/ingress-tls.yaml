@@ -1,12 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
   name: gohttpserver-ingress
   namespace: httpserver
 spec:
   ingressClassName: "nginx"
   rules:
-  - host: gohttpserver.cloudnative-learn.com
+  - host: gohttpserver-tls.cloudnative-learn.com
     http:
       paths:
         - backend:
@@ -16,3 +18,7 @@ spec:
                 number: 80
           path: /
           pathType: Prefix
+  tls:
+  - hosts:
+      - gohttpserver-tls.cloudnative-learn.com
+    secretName: httpserver-tls
