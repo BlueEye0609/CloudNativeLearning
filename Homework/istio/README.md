@@ -79,5 +79,5 @@ curl -s -I -HHost:gohttpserveristio.cloudnative-learn.com "http://$INGRESS_HOST:
 tls 的 
 ```
 curl -v -HHost:gohttpserveristio.cloudnative-learn.com --resolve "gohttpserveristio.cloudnative-learn.com:$SECURE_INGRESS_PORT:$INGRESS_HOST" \
---cacert gohttpserveristio.cloudnative-learn.com.crt "https://gohttpserveristio.cloudnative-learn.com:$SECURE_INGRESS_PORT/metrics"
+--cacert gohttpserveristio.cloudnative-learn.com.crt "https://gohttpserver.istio.cloudnative-learn.com:$SECURE_INGRESS_PORT/metrics"
 ```
