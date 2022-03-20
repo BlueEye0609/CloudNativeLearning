@@ -4,7 +4,7 @@ metadata:
   name: gohttpserver-vs
 spec:
   hosts:
-  - gohttpserveristio.cloudnative-learn.com
+  - gohttpserver.istio.cloudnative-learn.com
   gateways:
   - gohttpserver-gateway
   http:

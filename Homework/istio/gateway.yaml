@@ -3,6 +3,8 @@ kind: Gateway
 metadata:
   name: gohttpserver-gateway
 spec:
+  selector:
+    istio: ingressgateway # use istio default gateway implementation
   servers:
   - port:
       number: 443
@@ -10,6 +12,6 @@ spec:
       protocol: https
     tls:
       mode: SIMPLE
-      credentialName: istio-gohttpserver-tls
+      credentialName: gohttpserver-credential
     hosts:
-    - gohttpserveristio.cloudnative-learn.com
+    - gohttpserver.istio.cloudnative-learn.com

@@ -49,16 +49,16 @@ $ export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgat
 ### generate client and server certificates and keys
 1. create a root certificate and priviate key to sign the certificates for your service.
 ```
-$ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=cloudnative Inc./CN=cloudnative-learn.com' -keyout cloudnative-learn.com.key -out cloudnative-learn.com.crt
+$ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=cloudnative Inc./CN=istio.cloudnative-learn.com' -keyout istio.cloudnative-learn.com.key -out istio.cloudnative-learn.com.crt
 ```
-2. create a certificate and a private key for gohttpserveristio.cloudnative-learn.com
+2. create a certificate and a private key for gohttpserver.istio.cloudnative-learn.com
 ```
-$ openssl req -out gohttpserveristio.cloudnative-learn.com.csr -newkey rsa:2048 -nodes -keyout gohttpserveristio.cloudnative-learn.com.key -subj "/CN=gohttpserveristio.cloudnative-learn.com/O=gohttpserveristio organization"
-$ openssl x509 -req -sha256 -days 365 -CA cloudnative-learn.com.crt -CAkey cloudnative-learn.com.key -set_serial 0 -in gohttpserveristio.cloudnative-learn.com.csr -out gohttpserveristio.cloudnative-learn.com.crt
+$ openssl req -out gohttpserver.istio.cloudnative-learn.com.csr -newkey rsa:2048 -nodes -keyout gohttpserver.istiov.cloudnative-learn.com.key -subj "/CN=gohttpserver.istio.cloudnative-learn.com/O=gohttpserver.istio organization"
+$ openssl x509 -req -sha256 -days 365 -CA istio.cloudnative-learn.com.crt -CAkey istio.cloudnative-learn.com.key -set_serial 0 -in gohttpserver.istio.cloudnative-learn.com.csr -out gohttpserver.istio.cloudnative-learn.com.crt
 ```
 ### create a secret for the ingress gateway
 ```
-kubectl create -n istio-system secret tls gohttpserver-credential --key=gohttpserveristio.cloudnative-learn.com.key --cert=gohttpserveristio.cloudnative-learn.com.crt
+kubectl create -n istio-system secret tls gohttpserver-credential --key=gohttpserver.istio.cloudnative-learn.com.key --cert=gohttpserver.istio.cloudnative-learn.com.crt
 ```
 ### create gateway and virtualservice with TLS
 istio gateway
