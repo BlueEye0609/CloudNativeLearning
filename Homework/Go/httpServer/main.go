@@ -42,6 +42,7 @@ func index(w http.ResponseWriter, req *http.Request) {
 	} else {
 		fmt.Println("IP", net.ParseIP(userAddr), "Response Code", http.StatusOK)
 	}
+	w.Write([]byte(fmt.Sprintf("<h1>%d</h1>", delay)))
 }
 
 func healthzHandler(w http.ResponseWriter, req *http.Request) {

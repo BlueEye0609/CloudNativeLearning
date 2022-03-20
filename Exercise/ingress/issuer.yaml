@@ -1,11 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  generation: 1
   name: letsencrypt-prod
 spec:
   acme:
-    email: cloudnative@test.com
+    email: cloudnative@cloudnative-learn.com
     preferredChain: ""
     privateKeySecretRef:
       name: letsencrypt-prod
