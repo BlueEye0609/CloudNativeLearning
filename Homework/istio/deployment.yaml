@@ -2,27 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: httpserver
-  name: httpserver
-  namespace: httpserver
+    app: gohttpserver
+  name: gohttpserver
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: httpserver
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+      app: gohttpserver
   template:
     metadata:
       labels:
-        app: httpserver
+        app: gohttpserver
     spec:
       containers:
-      - image: yejing0609/gohttpserver:v6
-        name: httpserver
+      - image: yejing0609/gohttpserver:v7
+        name: gohttpserver
         resources: 
           requests:
             memory: "64Mi"
