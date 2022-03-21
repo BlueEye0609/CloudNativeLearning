@@ -263,4 +263,4 @@ promhttp_metric_handler_requests_total{code="503"} 0
 $ istioctl dashboard jaeger
 http://localhost:16686
 ```
-![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/jeagor.PNG)
+![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/jaegor.PNG)
