@@ -13,18 +13,21 @@ $ curl -L https://istio.io/downloadIstio | sh -
 $ cd istio-1.13.2
 $ sudo cp bin/istioctl /usr/bin/local
 ```
-2. 安装 istio
+2. 安装 istio with jaegor
+https://istio.io/latest/docs/ops/integrations/jaeger/#installation
+
 ```
-$ istioctl install  --set profile=demo -y
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.13/samples/addons/jaeger.yaml
+istioctl install -f ./tracing.yaml
 ```
 ## create and enable istio-injection for namespace
 ```
-$ kubectl apply -f namespace.yaml
+kubectl apply -f namespace.yaml
 ```
 ## deploy gohttpserver application
 ```
-$ kubectl apply -f deployment.yaml -n gohttpserver-istio
-$ kubectl apply -f service.yaml -n gohttpserver-istio
+kubectl apply -f deployment.yaml -n gohttpserver-istio
+kubectl apply -f service.yaml -n gohttpserver-istio
 ```
 ## build gateway and virtualservice
 参考
@@ -35,26 +38,22 @@ https://istio.io/latest/docs/tasks/traffic-management/ingress/secure-ingress/#ge
 
 ### Determine the ingress IP and ports
 ```
-$ kubectl get svc istio-ingressgateway -n istio-system
-
-$ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-$ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-
-$ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
-
-$ export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].port}')
-
+kubectl get svc istio-ingressgateway -n istio-system
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+export TCP_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="tcp")].port}')
 ```
 ### generate client and server certificates and keys
 1. create a root certificate and priviate key to sign the certificates for your service.
 ```
-$ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=cloudnative Inc./CN=istio.cloudnative-learn.com' -keyout istio.cloudnative-learn.com.key -out istio.cloudnative-learn.com.crt
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=cloudnative Inc./CN=istio.cloudnative-learn.com' -keyout istio.cloudnative-learn.com.key -out istio.cloudnative-learn.com.crt
 ```
 2. create a certificate and a private key for gohttpserver.istio.cloudnative-learn.com
 ```
-$ openssl req -out gohttpserver.istio.cloudnative-learn.com.csr -newkey rsa:2048 -nodes -keyout gohttpserver.istio.cloudnative-learn.com.key -subj "/CN=gohttpserver.istio.cloudnative-learn.com/O=gohttpserver.istio organization"
-$ openssl x509 -req -sha256 -days 365 -CA istio.cloudnative-learn.com.crt -CAkey istio.cloudnative-learn.com.key -set_serial 0 -in gohttpserver.istio.cloudnative-learn.com.csr -out gohttpserver.istio.cloudnative-learn.com.crt
+openssl req -out gohttpserver.istio.cloudnative-learn.com.csr -newkey rsa:2048 -nodes -keyout gohttpserver.istio.cloudnative-learn.com.key -subj "/CN=gohttpserver.istio.cloudnative-learn.com/O=gohttpserver.istio organization"
+
+openssl x509 -req -sha256 -days 365 -CA istio.cloudnative-learn.com.crt -CAkey istio.cloudnative-learn.com.key -set_serial 0 -in gohttpserver.istio.cloudnative-learn.com.csr -out gohttpserver.istio.cloudnative-learn.com.crt
 ```
 ### create a secret for the ingress gateway
 ```
@@ -257,3 +256,11 @@ promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
 * Connection #0 to host gohttpserver.istio.cloudnative-learn.com left intact
 ```
+![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/istio-web-tls.PNG)
+
+## Jeagor
+```
+$ istioctl dashboard jaeger
+http://localhost:16686
+```
+![image](https://github.com/Yejing0609/CloudNativeLearning/blob/main/Homework/K8S/pics/jeagor.PNG)
