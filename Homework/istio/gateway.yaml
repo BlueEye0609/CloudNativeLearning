@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gohttpserver-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default gateway implementation
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: https
+    tls:
+      mode: SIMPLE
+      credentialName: gohttpserver-credential
+    hosts:
+    - gohttpserver.istio.cloudnative-learn.com

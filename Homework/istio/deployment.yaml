@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gohttpserver
+  name: gohttpserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gohttpserver
+  template:
+    metadata:
+      labels:
+        app: gohttpserver
+    spec:
+      containers:
+      - image: yejing0609/gohttpserver:v7
+        name: gohttpserver
+        resources: 
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      terminationGracePeriodSeconds: 60
